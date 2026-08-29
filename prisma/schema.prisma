@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Supplier {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  contactPerson String?
+  phone         String?
+  email         String?
+  address       String?
+  leadTimeDays  Int      @default(7)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  stocks        FoamStock[]
+}
+
+model FoamStock {
+  id          String   @id @default(cuid())
+  sku         String   @unique
+  name        String
+  length      Float
+  width       Float
+  thickness   Float
+  quantity    Int      @default(1)
+  unitPrice   Float
+  batchNo     String?
+  location    String?
+  status      String   @default("available")
+  supplierId  String?
+  supplier    Supplier? @relation(fields: [supplierId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  movements   InventoryMovement[]
+}
+
+model FoamPiece {
+  id            String   @id @default(cuid())
+  sourceStockId String
+  name          String
+  length        Float
+  width         Float
+  thickness     Float
+  quantity      Int      @default(1)
+  isReusable    Boolean  @default(true)
+  location      String?
+  status        String   @default("available")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Product {
+  id           String   @id @default(cuid())
+  code         String   @unique
+  name         String
+  category     String?
+  sellingPrice Float    @default(0)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  recipes      ProductRecipe[]
+  productions  ProductionRun[]
+}
+
+model ProductRecipe {
+  id         String   @id @default(cuid())
+  productId  String
+  version    Int      @default(1)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  product    Product   @relation(fields: [productId], references: [id])
+  items      RecipeItem[]
+}
+
+model RecipeItem {
+  id                  String   @id @default(cuid())
+  recipeId            String
+  foamName            String
+  requiredLength      Float
+  requiredWidth       Float
+  requiredThickness   Float
+  quantityPerUnit     Int      @default(1)
+  allowLeftover       Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  recipe              ProductRecipe @relation(fields: [recipeId], references: [id])
+}
+
+model ProductionRun {
+  id           String   @id @default(cuid())
+  productId    String
+  plannedQty   Int
+  producedQty  Int      @default(0)
+  status       String   @default("planned")
+  operatorName String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  product     Product   @relation(fields: [productId], references: [id])
+}
+
+model InventoryMovement {
+  id            String   @id @default(cuid())
+  foamStockId    String
+  movementType   String
+  quantity       Int
+  referenceType  String?
+  referenceId    String?
+  notes          String?
+  createdAt      DateTime @default(now())
+
+  foamStock      FoamStock @relation(fields: [foamStockId], references: [id])
+}
+
+
+
+
+
+
+
