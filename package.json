@@ -1,0 +1,37 @@
+foam-app/
+├─ prisma/
+│  └─ schema.prisma
+├─ src/
+│  ├─ app/
+│  │  ├─ api/
+│  │  │  ├─ dashboard/route.ts
+│  │  │  ├─ inventory/route.ts
+│  │  │  ├─ inventory/add/route.ts
+│  │  │  ├─ inventory/cut/route.ts
+│  │  │  ├─ planner/route.ts
+│  │  │  ├─ production/route.ts
+│  │  │  ├─ products/route.ts
+│  │  │  └─ suppliers/route.ts
+│  │  ├─ inventory/page.tsx
+│  │  ├─ planner/page.tsx
+│  │  ├─ production/page.tsx
+│  │  ├─ products/page.tsx
+│  │  ├─ suppliers/page.tsx
+│  │  ├─ layout.tsx
+│  │  ├─ page.tsx
+│  │  └─ globals.css
+│  ├─ components/
+│  │  ├─ Nav.tsx
+│  │  ├─ Modal.tsx
+│  │  ├─ InventoryForm.tsx
+│  │  ├─ CutForm.tsx
+│  │  ├─ ProductForm.tsx
+│  │  ├─ SupplierForm.tsx
+│  │  └─ ProductionForm.tsx
+│  └─ lib/
+│     └─ prisma.ts
+├─ package.json
+├─ tailwind.config.ts
+├─ postcss.config.js
+├─ next.config.js
+└─ tsconfig.json
